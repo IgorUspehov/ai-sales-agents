@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -34,6 +35,7 @@ def load_pack(niche: str) -> dict:
     return json.loads(path.read_text())
 def lang(code: str) -> str:
     return code if code in LINES else "de"
+REFUSAL = re.compile(r"(?<!\w)(?:nein|no|нет|ні)(?!\w)")
 @app.get("/health")
 def health():
     return {"ok": True}
@@ -53,8 +55,8 @@ def talk(body: TalkIn):
     step = body.step
     if body.text:
         if step == 1: card["area"] = body.text
-        elif step == 2: card["licence"] = "no" if any(w in text for w in ("nein", "no", "нет", "ні")) else "yes"
-        elif step == 3: card["free_now"] = "no" if any(w in text for w in ("nein", "no", "нет", "ні")) else "yes"
+        elif step == 2: card["licence"] = "no" if REFUSAL.search(text) else "yes"
+        elif step == 3: card["free_now"] = "no" if REFUSAL.search(text) else "yes"
         elif step == 4: card["exclude"] = body.text
         elif step == 5: card["phone"] = body.text
         elif step == 6: card["service"] = body.text
