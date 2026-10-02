@@ -68,3 +68,17 @@ def talk(body: TalkIn):
     if stopped and code == "en": say = "Without a licence and free visits we do not start."
     ready = bool(card.get("area") and card.get("phone") and card.get("service") and not stopped)
     return {"say": say, "step": step, "card": card, "ready": ready, "stopped": stopped}
+
+from fastapi.responses import FileResponse
+WEB = ROOT / "web"
+
+@app.get("/")
+def home():
+    return FileResponse(WEB / "index.html")
+
+@app.get("/{full_path:path}")
+def spa(full_path: str):
+    target = WEB / full_path
+    if target.is_file():
+        return FileResponse(target)
+    return FileResponse(WEB / "index.html")
