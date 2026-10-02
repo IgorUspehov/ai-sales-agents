@@ -1,0 +1,9 @@
+{
+  "id": "pflegedienst",
+  "price": "890 EUR / month",
+  "setup": "490 EUR after this enquiry",
+  "ads": "from 600 EUR on the buyer card",
+  "never": ["new client guarantee", "insurer approval", "website", "software"],
+  "card": ["service", "person", "area", "licence", "free_now", "phone", "backup", "exclude"],
+  "steps": ["decision", "area", "licence", "free_now", "exclude", "phone", "name", "close"]
+}
